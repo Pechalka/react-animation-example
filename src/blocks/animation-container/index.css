@@ -1,0 +1,36 @@
+
+.nav-panel {
+	position: fixed;
+	top: 50px;
+	left: 50px;
+	z-index: 99999;
+}
+
+.section--green {
+	background: rgba(38, 202, 150, 0.7);
+}
+
+.section--yellow {
+	background: rgba(253, 217, 0, 0.7)
+}
+
+.step {
+	min-height: 100vh;
+	padding: 50px;
+	border-bottom: 3px solid #ccc;
+	opacity: 0.3;
+	transition : opacity .3s ;
+}
+
+.TOC--zoom-out .step {
+	opacity: 1;
+}
+
+.step--active {
+	opacity: 1;
+}
+
+.section {
+	float: left;
+}
+
