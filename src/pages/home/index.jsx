@@ -67,6 +67,7 @@ var index = React.createClass({
 		var actions = { changeBook : this.changeBook };
 
 		return <div >
+			{/*<p>111</p>*/}
 			<div>
 				<NavPanel onChangeZoom={this.changeZoom} zoomOut={this.state.zoomOut}/>
 				<Screen clickOnStep={this.clickOnStep} onChageStep={this.chageStep} step={this.state.currentStep} zoomOut={this.state.zoomOut}>

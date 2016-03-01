@@ -19,7 +19,9 @@ var Screen = React.createClass ({
 			state :  1,
 			translateY : 0,
 			translateX : 0,
-			offsetTop : 0 
+			offsetTop : 0,
+			h : -1,
+			zoomOutAnimation : false //Do not animation when screen show
 		}
 	},
 	componentDidMount : function() {
@@ -38,11 +40,16 @@ var Screen = React.createClass ({
 		// }
 
 		if (this.props.zoomOut){
-			// window.scrollTo(0, 0);
-			// this.setState({ state : 3 })
-			this.zoomOut(); //TODO: render without animation
+			window.scrollTo(0, 0);
+			this.setState({ 
+				state : 3,
+				h :  this.getMaxSectionHeight()
+			})
+
+			setTimeout(() => this.setState({ zoomOutAnimation : true }), 500)
+			
 		} else {
-			this.setState({ state : 1 }, () => {
+			this.setState({ state : 1 , zoomOutAnimation : true }, () => {
 				window.scrollTo(0, this.state.offsetTop);
 			})
 		}
@@ -133,7 +140,10 @@ var Screen = React.createClass ({
 			state : 2
 		})
 		setTimeout(()=> {
-			this.setState({ state : 3 })
+			this.setState({ 
+				state : 3,
+				h :  this.getMaxSectionHeight()
+			})
 		}, 1000)
 	},
 	zoomIn : function(){
@@ -157,7 +167,7 @@ var Screen = React.createClass ({
 
 		if (state == 3) 
 			return {     
-				transition : 'all 1s',
+				transition : this.state.zoomOutAnimation && 'all 1s' ,// ,
 				transform: 'scale(0.5)',
 	    		transformOrigin: '0 0',
 	    		width: '200%',
@@ -193,10 +203,12 @@ var Screen = React.createClass ({
 	// 	return this.state.state != nextState.state;
 	// },
 	render : function(){
-		console.log(' render ');
+
+		console.log(' render ', this.state.state, this.state.h);
 		var wrapperStyle = { 
-			height : this.state.state == 3 ?  this.getMaxSectionHeight() / 2 : "auto",
+			height : this.state.state == 3 ?  this.state.h / 2 : "auto",
 			overflow : this.state.state == 3 ? 'hidden' : 'inherit'
+			//, visibility : this.state.h == -1 ? 'hidden' : 'visible'
 		}
 
 		var sections = this.props.children.map((Section, n)=>React.addons.cloneWithProps(Section, { ref : 'section_' + n, key : n, state : this.state.state, currentStep : this.props.step, onClickOnStep : this.clickOnStep }))
